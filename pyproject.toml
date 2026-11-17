@@ -1,0 +1,28 @@
+[project]
+name = "layout-guard"
+version = "0.2.0"
+description = "Keep Python project layouts organised: a declarative layout.toml, a stdlib-only checker run as a test, and a transactional plan/apply refactor that moves modules and rewrites imports."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+layout-guard = "layout_guard.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/layout_guard"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"skill" = "layout_guard/_skill"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,46 @@
+# layout.toml: layout-guard's own layout rules (it is checked by itself; see tests/cli).
+version = 1
+
+[defaults]
+max_files_per_dir = 10
+forbidden_names = ["utils", "helpers", "misc", "common", "stuff", "tmp"]
+
+[[root]]
+path = "src/layout_guard"
+top_level = ["__init__.py", "__main__.py", "cli.py", "checker.py", "scaffold/", "refactor/", "install/"]
+
+[root.layers]
+checker = []              # stdlib only: `init --vendor` copies this one file into projects
+scaffold = ["checker", "__init__"]
+refactor = ["checker", "scaffold"]   # scaffold: the names of the files init writes
+install = []
+cli = ["*"]
+"__main__" = ["*"]
+
+[[root]]
+path = "tests"
+top_level = ["__init__.py", "conftest.py", "checker/", "scaffold/", "refactor/", "install/", "cli/"]
+
+[[where]]
+adding = "A layout.toml key, a rule, or how rules are reported (stdlib only, no layout_guard imports)"
+put_in = "checker.py"
+
+[[where]]
+adding = "Something `init` generates (layout.toml, the layout test, AGENTS.md, CI snippets)"
+put_in = "scaffold/"
+
+[[where]]
+adding = "Planning or applying moves (plan file, grouping, import rewriting, git transaction)"
+put_in = "refactor/"
+
+[[where]]
+adding = "Installing the skill, doctor"
+put_in = "install/"
+
+[[where]]
+adding = "A new subcommand or flag"
+put_in = "cli.py"
+
+[[where]]
+adding = "A test"
+put_in = "tests/<package>/ mirroring src/layout_guard/"
